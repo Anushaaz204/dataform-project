@@ -1,0 +1,18 @@
+-- Create a table with clean data
+config {
+  type: "table",
+  description: "This is to create a clean/denormalized data from vw_stg_raw_events view"
+}
+WITH raw_source AS (
+  SELECT * FROM ${ref("vw_stg_raw_events")}
+)
+SELECT
+  event_date,
+  traffic_source.medium AS traffic_source_medium, 
+  user_pseudo_id, 
+  CAST((SELECT value.int_value FROM UNNEST(event_params) WHERE key = 'ga_session_id' LIMIT 1) AS INT) AS ga_session_id,
+  ecommerce.total_item_quantity AS total_item_quantity
+  event_value_in_usd
+FROM raw_source
+WHERE LOWER(event_name) = 'purchase'
+AND LOWER(traffic_source.medium) != '(data deleted)' 

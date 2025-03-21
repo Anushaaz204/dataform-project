@@ -1,0 +1,10 @@
+config {
+    type: "table",
+    description: "This is to create a raw data from the public dataset"
+}
+
+  -- Create a raw stage view
+SELECT
+  *
+FROM
+  `bigquery-public-data.ga4_obfuscated_sample_ecommerce.events_*`
