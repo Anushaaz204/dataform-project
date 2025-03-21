@@ -1,5 +1,5 @@
 config {
-    type: "table",
+    type: "view",
     description: "This is to create a raw data from the public dataset"
 }
 

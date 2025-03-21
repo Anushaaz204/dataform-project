@@ -1,0 +1,6 @@
+{
+  "warehouse": "bigquery",
+  "defaultDatabase": "dataform-ga4",
+  "defaultSchema": "ga4_obfuscated_sample_ecommerce" ,
+  "defaultLocation": "us"
+}

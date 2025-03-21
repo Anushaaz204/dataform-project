@@ -1,22 +1,27 @@
--- Create a table with report data
 config {
-  type: "table",
-  description: "This is to create a business table report from purchase_traffic_source_medium"
+    type: "table",
+    description: "This is to create a business table report from purchase_traffic_source_medium"
 }
-WITH agg AS (
+
+  -- Create a table with report data
+WITH
+  agg AS (
   SELECT
     FORMAT_DATE('%Y-%m', PARSE_DATE('%Y%m%d', event_date)) AS month,
     traffic_source_medium,
     SUM(event_value_in_usd) AS purchased_value_in_usd,
-	SUM(ecommerce.total_item_quantity) AS total_purchased_items,
+    SUM(ecommerce.total_item_quantity) AS total_purchased_items,
     COUNT(*) AS total_no_purchases,
-  FROM ${ref("purchase_traffic_source_medium")} 
-  GROUP BY month, traffic_source_medium
-)
+  FROM
+    ${ref("purchase_traffic_source_medium")}
+  GROUP BY
+    month,
+    traffic_source_medium )
 SELECT
   month,
   traffic_source_medium,
   purchased_value_in_usd,
   total_purchased_items,
   total_purchased_items / total_no_purchases AS avg_purchased_items
-FROM agg
+FROM
+  agg
