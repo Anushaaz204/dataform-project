@@ -23,7 +23,8 @@ SELECT
       KEY = 'ga_session_id'
     LIMIT
       1) AS INT) AS ga_session_id,
-  ecommerce.total_item_quantity AS total_item_quantity event_value_in_usd
+  event_value_in_usd,
+  ecommerce.total_item_quantity AS total_item_quantity
 FROM
   raw_source
 WHERE
