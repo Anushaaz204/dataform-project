@@ -1,9 +1,12 @@
 config {
     type: "view",
     description: "This is to create a raw data from the public dataset"
-    name: "vw_stg_raw_events"
+
 }
 
+  /**
+  * This code creates a view called vw_stg_raw_events by referencing the piblic dataset.
+  **/
   -- Create a raw stage view
 SELECT
   *

@@ -3,6 +3,13 @@ config {
     description: "This is to create a clean/denormalized data from vw_stg_raw_events view"
 }
 
+  /**
+  * This code performs data cleaning and transformation to populate purchase_traffic_source_medium using view vw_stg_raw_events.
+  *
+  * Key transformations:
+  * - Filters out events other than purchase and traffic source from data deleted.
+  * - Extract the 'ga_session_id' from the 'event_params' array.
+  **/
   -- Create a table with clean data
 WITH
   raw_source AS (

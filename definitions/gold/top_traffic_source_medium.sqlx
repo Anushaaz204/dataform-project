@@ -3,6 +3,13 @@ config {
     description: "This is to create a business table report from purchase_traffic_source_medium"
 }
 
+  /**
+  * This Table report analyzing which traffic_source_medium was responsible for the most value and volume.
+  * This code aggregates clean events data by month, traffic_source_medium.
+  *
+  * Key transformations:
+  * - Aggregates purchased value, total number of purchases and average number of purchases by month, traffic_source_medium.
+  **/
   -- Create a table with report data
 WITH
   agg AS (
