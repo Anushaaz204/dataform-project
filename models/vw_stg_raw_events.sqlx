@@ -1,6 +1,7 @@
 config {
     type: "view",
     description: "This is to create a raw data from the public dataset"
+    name: "vw_stg_raw_events"
 }
 
   -- Create a raw stage view
