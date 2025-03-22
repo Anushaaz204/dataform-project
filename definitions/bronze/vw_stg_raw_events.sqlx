@@ -1,5 +1,6 @@
 config {
     type: "view",
+    schema: "bronze",
     description: "This is to create a raw data from the public dataset"
 
 }

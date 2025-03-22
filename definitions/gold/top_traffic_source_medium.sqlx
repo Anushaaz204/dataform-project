@@ -1,5 +1,6 @@
 config {
     type: "table",
+    schema: "gold",
     description: "This is to create a business table report from purchase_traffic_source_medium"
 }
 
