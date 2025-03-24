@@ -30,6 +30,6 @@ SELECT
   traffic_source_medium,
   purchased_value_in_usd,
   total_purchased_items,
-  total_purchased_items / total_no_purchases AS avg_purchased_items
+  ROUND(total_purchased_items / total_no_purchases, 2) AS avg_purchased_items
 FROM
   agg
