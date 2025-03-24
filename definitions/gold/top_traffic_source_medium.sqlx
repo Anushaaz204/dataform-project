@@ -18,7 +18,7 @@ WITH
     FORMAT_DATE('%Y-%m', PARSE_DATE('%Y%m%d', event_date)) AS month,
     traffic_source_medium,
     SUM(event_value_in_usd) AS purchased_value_in_usd,
-    SUM(total_item_quantity) AS total_purchased_items,
+    SUM(total_purchased_items) AS total_purchased_items,
     COUNT(*) AS total_no_purchases,
   FROM
     ${ref("purchase_traffic_source_medium")}
