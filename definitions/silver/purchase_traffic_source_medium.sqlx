@@ -32,7 +32,7 @@ SELECT
     LIMIT
       1) AS INT) AS ga_session_id,
   event_value_in_usd,
-  ecommerce.total_item_quantity AS total_item_quantity
+  ecommerce.unique_items AS total_purchased_items
 FROM
   raw_source
 WHERE
