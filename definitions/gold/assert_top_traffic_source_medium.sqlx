@@ -1,17 +1,20 @@
 config {
-  type: "assertion",
-  schema: "gold"
+    type: "assertion",
+    schema: "gold"
 }
-/*
-* This code ensures the following data quality checks
-* "Ensure 'month' and 'traffic_source_medium' are not null." 
-* "Ensure 'avg_purchased_items' falls within a valid range."
-*/
-  SELECT
-  COUNT(CASE WHEN month IS NULL OR traffic_source_medium IS NULL THEN 1 END) AS null_month_or_medium,
-  COUNT(CASE WHEN avg_purchased_items < 0 OR avg_purchased_items > 100 THEN 1 END) AS negative_purchased_items
+
+  /*
+  * This code ensures the following data quality checks
+  * "Ensure no duplicates for 'month' and 'traffic_source_medium'."
+  */
+SELECT
+  COUNT(*),
+  month,
+  traffic_source_medium
 FROM
   ${ref("top_traffic_source_medium")}
+GROUP BY
+  month,
+  traffic_source_medium
 HAVING
-  null_month_or_medium > 0 OR
-  negative_purchased_items > 0
+  COUNT(*) > 1

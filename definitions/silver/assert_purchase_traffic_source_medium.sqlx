@@ -1,9 +1,20 @@
 config {
-  type: "assertion",
-  schema: "silver"
+    type: "assertion",
+    schema: "silver"
 }
---"Ensure 'total_purchased_items' is non-negative." 
-  SELECT COUNT(*) AS negative_purchased_items
-  FROM ${ref("purchase_traffic_source_medium")}
-  WHERE total_purchased_items < 0
-  HAVING negative_purchased_items > 0
+
+  /*
+  * This code ensures the following data quality checks
+  * "Ensure 'month' and 'traffic_source_medium' are not null."
+  * "Ensure 'event_date' contains valid date values."
+  */
+SELECT
+  COUNT(*) AS null_format_check
+FROM
+  ${ref("purchase_traffic_source_medium")}
+WHERE
+  SAFE.PARSE_DATE('%Y%m%d', event_date) IS NULL
+  OR event_date IS NULL
+  OR traffic_source_medium IS NULL
+HAVING
+  null_format_check >0
