@@ -24,27 +24,7 @@ WITH
     ${ref("purchase_traffic_source_medium")}
   GROUP BY
     month,
-    traffic_source_medium ) // Assertions FOR DATA validation
-ASSERT
-  ("no_null_month_traffic_source_medium",
-    `
-  SELECT
-    COUNT(*)
-  FROM
-    agg
-  WHERE
-    month IS NULL
-    OR traffic_source_medium IS NULL `) { description: "Ensure 'month' and 'traffic_source_medium' are not null." }
-ASSERT
-  ("no_zero_total_no_purchases",
-    `
-  SELECT
-    COUNT(*)
-  FROM
-    agg
-  WHERE
-    total_no_purchases = 0 `) { description: "Ensure 'total_no_purchases' is not zero. A value of zero would lead to division by zero in the calculation of 'avg_purchased_items'." }
-  --Final select
+    traffic_source_medium )
 SELECT
   month,
   traffic_source_medium,

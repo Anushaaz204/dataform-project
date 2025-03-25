@@ -1,0 +1,20 @@
+config {
+  type: "assertion",
+  schema: "gold"
+}
+/*
+* This code ensures the following data quality checks
+* "Ensure 'month' and 'traffic_source_medium' are not null." 
+* "Ensure 'total_no_purchases' is not zero. A value of zero would lead to division by zero in the calculation of 'avg_purchased_items'."
+* "Ensure 'avg_purchased_items' falls within a valid range."
+*/
+  SELECT
+  COUNT(CASE WHEN month IS NULL OR traffic_source_medium IS NULL THEN 1 END) AS null_month_or_medium,
+  COUNT(CASE WHEN total_no_purchases = 0 THEN 1 END) AS zero_total_no_purchases,
+  COUNT(CASE WHEN avg_purchased_items < 0 OR avg_purchased_items > 100 THEN 1 END) AS negative_purchased_items
+FROM
+  ${ref("top_traffic_source_medium")}
+HAVING
+  null_month_or_medium > 0 OR
+  zero_total_no_purchases > 0 OR
+  negative_purchased_items > 0

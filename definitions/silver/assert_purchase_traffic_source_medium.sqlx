@@ -1,0 +1,8 @@
+config {
+  type: "assertion",
+  schema: "silver"
+}
+--"Ensure 'total_purchased_items' is non-negative." 
+  SELECT COUNT(*)
+  FROM ${ref("purchase_traffic_source_medium")}
+  WHERE total_purchased_items < 0
