@@ -6,3 +6,4 @@ config {
   SELECT COUNT(*) AS negative_purchased_items
   FROM ${ref("purchase_traffic_source_medium")}
   WHERE total_purchased_items < 0
+  HAVING negative_purchased_items > 0
