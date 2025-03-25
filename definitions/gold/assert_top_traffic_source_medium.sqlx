@@ -8,7 +8,7 @@ config {
   * "Ensure no duplicates for 'month' and 'traffic_source_medium'."
   */
 SELECT
-  COUNT(*),
+  COUNT(*) AS duplicate_check,
   month,
   traffic_source_medium
 FROM
@@ -17,4 +17,4 @@ GROUP BY
   month,
   traffic_source_medium
 HAVING
-  COUNT(*) > 1
+  duplicate_check > 1
