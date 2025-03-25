@@ -12,29 +12,38 @@ config {
   * - Extract the 'ga_session_id' from the 'event_params' array.
   **/
   -- Create a table with clean data
-WITH
-  raw_source AS (
-  SELECT
-    *
-  FROM
-    ${ref("vw_stg_raw_events")} )
 SELECT
   event_date,
   traffic_source.medium AS traffic_source_medium,
   user_pseudo_id,
-  CAST((
-    SELECT
-      value.int_value
-    FROM
-      UNNEST(event_params)
-    WHERE
-      KEY = 'ga_session_id'
-    LIMIT
-      1) AS INT) AS ga_session_id,
+  ep.value.int_value AS ga_session_id,
   event_value_in_usd,
   ecommerce.unique_items AS total_purchased_items
 FROM
-  raw_source
+  ${ref("vw_stg_raw_events")},
+  UNNEST(event_params) AS ep
 WHERE
-  LOWER(event_name) = 'purchase'
-  AND LOWER(traffic_source.medium) != '(data deleted)'
+  ep.key = 'ga_session_id'
+  AND LOWER(event_name) = 'purchase'
+  AND LOWER(traffic_source.medium) != '(data deleted)' // Assertions FOR DATA validation
+ASSERT
+  ("ga_session_id_not_null",
+    `
+  SELECT
+    COUNT(*)
+  FROM
+    ${ref("vw_stg_raw_events")},
+    UNNEST(event_params) AS ep
+  WHERE ep.key = 'ga_session_id' 
+    AND ep.value.int_value IS NULL
+  WHERE
+    ga_session_id IS NULL `) { description: "Ensure 'ga_session_id' is not null for any purchase event." }
+ASSERT
+  ("valid_total_purchased_items",
+    `
+  SELECT
+    COUNT(*)
+  FROM
+    ${ref("vw_stg_raw_events")}
+  WHERE
+    ecommerce.unique_items < 0 `) { description: "Ensure 'total_purchased_items' is non-negative." }
